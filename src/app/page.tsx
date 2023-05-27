@@ -1,4 +1,5 @@
 import prisma from "@/utils/db";
+import { revalidatePath } from "next/cache";
 import Image from "next/image";
 import { z } from "zod";
 
@@ -30,6 +31,7 @@ export default async function Home() {
       data: todo,
     });
     console.log(todo);
+    revalidatePath("/");
   }
 
   return (
