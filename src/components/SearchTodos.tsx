@@ -1,11 +1,12 @@
 "use client";
 
 import { Todo } from "@prisma/client";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 
 export default function SearchTodos({ initialTodos, onSearch }: { initialTodos: Todo[]; onSearch: (search: string) => Promise<Todo[]> }) {
   const [todos, setTodos] = useState(initialTodos);
   const [search, setSearch] = useState("");
+  const [pending, startTransition] = useTransition();
 
   return (
     <div>
@@ -18,10 +19,14 @@ export default function SearchTodos({ initialTodos, onSearch }: { initialTodos: 
         }}
       />
       <button
+        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded disabled:bg-gray-700"
         onClick={async () => {
-          const todos = await onSearch(search);
-          setTodos(todos);
+          startTransition(async () => {
+            const todos = await onSearch(search);
+            setTodos(todos);
+          });
         }}
+        disabled={pending}
       >
         Search
       </button>
