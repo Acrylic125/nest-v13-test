@@ -2,6 +2,7 @@ import prisma from "@/utils/db";
 import { revalidatePath } from "next/cache";
 import Image from "next/image";
 import { z } from "zod";
+import { Alert, AlertDescription, AlertTitle } from "../components/ui/alert";
 
 async function getData() {
   const todos = prisma.todo.findMany({});
@@ -37,6 +38,10 @@ export default async function Home() {
   return (
     <main>
       <h1>Todos</h1>
+      <Alert>
+        <AlertTitle>Heads up!</AlertTitle>
+        <AlertDescription>You can add components to your app using the cli.</AlertDescription>
+      </Alert>
       <form action={createTodo}>
         <input type="text" name="title" className="text-black" />
         <button type="submit">Add Todo</button>
